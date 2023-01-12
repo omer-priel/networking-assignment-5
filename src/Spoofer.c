@@ -6,7 +6,7 @@
 // ICMP header len for echo req
 #define ICMP_HEADER_LEN 8
 
-unsigned short calculate_checksum(unsigned short *paddress, int len);
+u_short calculate_checksum(unsigned short *paddress, int len);
 
 int main(int argc, char **argv)
 {
@@ -48,14 +48,11 @@ int main(int argc, char **argv)
     struct sockaddr_in dest_in;
     memset(&dest_in, 0, sizeof(struct sockaddr_in));
     dest_in.sin_family = AF_INET;
-
-    // The port is irrelant for Networking and therefore was zeroed.
-    // dest_in.sin_addr.s_addr = iphdr.ip_dst.s_addr;
     dest_in.sin_addr.s_addr = inet_addr(destination);
-    // inet_pton(AF_INET, DESTINATION_IP, &(dest_in.sin_addr.s_addr));
 
     // Create raw socket for IP-RAW (make IP-header by yourself)
     int sock = -1;
+
     if ((sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) == -1)
     {
         printf("ERROR: socket() failed with error: %d\n", errno);

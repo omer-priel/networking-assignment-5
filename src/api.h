@@ -3,41 +3,16 @@
 #include <stdio.h>
 #include <pcap.h>
 #include <arpa/inet.h>
-#include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/ip.h>
-#include <sys/socket.h>
 #include <linux/if_packet.h>
 #include <net/ethernet.h>
-#include <stdio.h>
-#include <pcap.h>
-#include <stdio.h>
-#include <pcap.h>
-#include <stdio.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/ip.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/ip.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <netinet/ip.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <getopt.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <arpa/inet.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <netinet/ip_icmp.h>
-#include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -104,6 +79,7 @@ struct tcpheader
     u_short th_urp; /* urgent pointer */
 };
 
+/* APP header */
 struct appheader
 {
     u_int timestamp;
@@ -112,6 +88,16 @@ struct appheader
     u_char status_code;
     u_short cache_control;
     u_short padding;
+};
+
+/* ICMP header  */
+struct icmpheader
+{
+    u_char icmp_type;    /* ICMP message type */
+    u_char icmp_code;    /* Error code */
+    u_short icmp_chksum; /* Checksum for ICMP Header and data */
+    u_short icmp_ids;    /* Used for identifying request */
+    u_short icmp_seqs;   /* Sequence number */
 };
 
 unsigned short calculate_checksum(unsigned short *paddress, int len);
