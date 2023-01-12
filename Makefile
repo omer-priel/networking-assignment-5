@@ -36,6 +36,9 @@ $(BIN_DIR)/Sniffer.o: $(BIN_DIR) $(SRC_DIR)/Sniffer.c $(SRC_DIR)/api.h
 $(BIN_DIR)/Spoofer.o: $(BIN_DIR) $(SRC_DIR)/Spoofer.c $(SRC_DIR)/api.h
 	$(CC) -o "$(BIN_DIR)/Spoofer.o" -c "$(SRC_DIR)/Spoofer.c"
 
+$(BIN_DIR)/SnifferSpoofer.o: $(BIN_DIR) $(SRC_DIR)/SnifferSpoofer.c $(SRC_DIR)/api.h
+	$(CC) -o "$(BIN_DIR)/SnifferSpoofer.o" -c "$(SRC_DIR)/SnifferSpoofer.c"
+
 $(BIN_DIR)/Gateway.o: $(BIN_DIR) $(SRC_DIR)/Gateway.c $(SRC_DIR)/api.h
 	$(CC) -o "$(BIN_DIR)/Gateway.o" -c "$(SRC_DIR)/Gateway.c"
 
@@ -46,12 +49,15 @@ Sniffer: $(DIST_DIR) $(BIN_DIR)/Sniffer.o $(BIN_DIR)/api.o
 Spoofer: $(DIST_DIR) $(BIN_DIR)/Spoofer.o $(BIN_DIR)/api.o
 	$(CC) -o "$(DIST_DIR)/Spoofer" "$(BIN_DIR)/Spoofer.o" "$(BIN_DIR)/api.o"
 
+SnifferSpoofer: $(DIST_DIR) $(BIN_DIR)/SnifferSpoofer.o $(BIN_DIR)/api.o
+	$(CC) -o "$(DIST_DIR)/SnifferSpoofer" "$(BIN_DIR)/SnifferSpoofer.o" "$(BIN_DIR)/api.o"
+
 Gateway: $(DIST_DIR) $(BIN_DIR)/Gateway.o $(BIN_DIR)/api.o
 	$(CC) -o "$(DIST_DIR)/Gateway" "$(BIN_DIR)/Gateway.o" "$(BIN_DIR)/api.o"
 
 
 # build
-build: Sniffer Spoofer Gateway
+build: Sniffer Spoofer SnifferSpoofer Gateway
 
 # actions
 test-sniffer-open:
