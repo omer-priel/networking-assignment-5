@@ -26,6 +26,21 @@
 #include <sys/socket.h>
 #include <netinet/ip.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <netinet/in.h>
+#include <netinet/ip_icmp.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "config.h"
 
@@ -98,3 +113,5 @@ struct appheader
     u_short cache_control;
     u_short padding;
 };
+
+unsigned short calculate_checksum(unsigned short *paddress, int len);

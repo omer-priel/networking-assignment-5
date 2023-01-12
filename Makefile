@@ -74,3 +74,9 @@ test-sniffer-show:
 
 test-sniffer-clean:
 	docker-compose exec attacker rm ./Sniffer.txt
+
+test-spoofer-1:
+	docker-compose exec attacker ./Spoofer 10.9.0.6 10.9.0.7
+
+test-spoofer-2:
+	docker-compose exec attacker ./Spoofer 8.8.8.8 10.9.0.7
