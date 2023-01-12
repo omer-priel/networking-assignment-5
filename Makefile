@@ -10,6 +10,9 @@ DIST_DIR=./dist
 clean:
 	rm -rf $(BIN_DIR) $(DIST_DIR)
 
+docker-build:
+	docker-compose build
+
 docker-up:
 	docker-compose up -d
 
@@ -34,7 +37,7 @@ $(BIN_DIR)/Gateway.o: $(BIN_DIR) $(SRC_DIR)/Gateway.c $(SRC_DIR)/api.h
 
 # applications
 Sniffer: $(DIST_DIR) $(BIN_DIR)/Sniffer.o $(BIN_DIR)/api.o
-	$(CC) -o "$(DIST_DIR)/Sniffer" "$(BIN_DIR)/Sniffer.o" "$(BIN_DIR)/api.o"
+	$(CC) -o "$(DIST_DIR)/Sniffer" "$(BIN_DIR)/Sniffer.o" "$(BIN_DIR)/api.o" -lpcap
 
 Spoofer: $(DIST_DIR) $(BIN_DIR)/Spoofer.o $(BIN_DIR)/api.o
 	$(CC) -o "$(DIST_DIR)/Spoofer" "$(BIN_DIR)/Spoofer.o" "$(BIN_DIR)/api.o"
@@ -47,3 +50,7 @@ Gateway: $(DIST_DIR) $(BIN_DIR)/Gateway.o $(BIN_DIR)/api.o
 build: Sniffer Spoofer Gateway
 
 rebuild: clean build
+
+# actions
+test-sniffer-1:
+	docker-compose exec attacker ./Sniffer

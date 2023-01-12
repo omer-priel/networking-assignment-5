@@ -1,5 +1,7 @@
 #include "api.h"
 
-int main(int argc, char **argv)
+int main()
 {
+    printf("Got a packet\n");
+    return 0;
 }

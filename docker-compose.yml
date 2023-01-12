@@ -1,20 +1,20 @@
 version: "3"
 
 services:
-    hostA:
-        image: handsonsecurity/seed-ubuntu:large
-        container_name: hostA-10.9.0.5
+    attacker:
+        build: .
+        image: seed-attacker
+        container_name: host-attacker-10.9.0.5
         tty: true
         cap_add:
             - ALL
         networks:
             net-10.9.0.0:
                 ipv4_address: 10.9.0.5
-        command: bash -c "/etc/init.d/openbsd-inetd start && tail -f /dev/null"
 
-    hostB:
+    hostA:
         image: handsonsecurity/seed-ubuntu:large
-        container_name: hostB-10.9.0.6
+        container_name: hostA-10.9.0.6
         tty: true
         cap_add:
             - ALL
@@ -23,7 +23,7 @@ services:
                 ipv4_address: 10.9.0.6
         command: bash -c "/etc/init.d/openbsd-inetd start  && tail -f /dev/null"
 
-    hostC:
+    hostB:
         image: handsonsecurity/seed-ubuntu:large
         container_name: hostB-10.9.0.7
         tty: true
@@ -34,9 +34,9 @@ services:
                 ipv4_address: 10.9.0.7
         command: bash -c "/etc/init.d/openbsd-inetd start  && tail -f /dev/null"
 
-    hostD:
+    hostC:
         image: handsonsecurity/seed-ubuntu:large
-        container_name: hostB-10.9.0.8
+        container_name: hostC-10.9.0.8
         tty: true
         cap_add:
             - ALL

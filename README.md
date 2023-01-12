@@ -13,8 +13,8 @@ University assignment 5 for Networking
 Run the following commands for the build the application:
 
 ```bash
+make docker-build
 make docker-up
-make build
 ```
 
 4 container will created with IPs: 10.9.0.x (4 < x < 9) \
