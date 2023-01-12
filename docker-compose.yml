@@ -3,8 +3,8 @@ version: "3"
 services:
     attacker:
         build: .
-        image: seed-attacker
-        container_name: host-attacker-10.9.0.5
+        image: attacker
+        container_name: attacker-10.9.0.5
         tty: true
         cap_add:
             - ALL

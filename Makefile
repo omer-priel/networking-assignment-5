@@ -16,6 +16,10 @@ docker-build:
 docker-up:
 	docker-compose up -d
 
+docker-rebuild:
+	docker-compose build
+	docker-compose up -d
+
 # units
 $(BIN_DIR):
 	mkdir $(BIN_DIR)
@@ -49,8 +53,6 @@ Gateway: $(DIST_DIR) $(BIN_DIR)/Gateway.o $(BIN_DIR)/api.o
 # build
 build: Sniffer Spoofer Gateway
 
-rebuild: clean build
-
 # actions
 test-sniffer-1:
-	docker-compose exec attacker ./Sniffer
+	docker-compose exec attacker ./Sniffer icmp
