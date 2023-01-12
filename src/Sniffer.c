@@ -2,41 +2,51 @@
 
 int main(int argc, char *argv[])
 {
-    printf("Internet Device: %s\n", NETWORK_DEV);
-
     char *filter = "tcp";
 
     char errbuf[PCAP_ERRBUF_SIZE];
 
     pcap_t *handle;            /* Session handle */
     struct bpf_program fp;     /* The compiled filter expression */
-    bpf_u_int32 mask;          /* The netmask of our sniffing device */
+    bpf_u_int32 mask;          /* Our netmask */
     bpf_u_int32 net;           /* The IP of our sniffing device */
     struct pcap_pkthdr header; /* The header that pcap gives us */
     const u_char *packet;      /* The actual packet */
 
-    if (pcap_lookupnet(NETWORK_DEV, &net, &mask, errbuf) == -1)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    char *dev = pcap_lookupdev(errbuf);
+#pragma GCC diagnostic pop
+    if (dev == NULL)
     {
-        fprintf(stderr, "Can't get netmask for device %s\n", NETWORK_DEV);
+        printf("Couldn't find default device: %s\n", errbuf);
+        return 1;
+    }
+
+    if (pcap_lookupnet(dev, &net, &mask, errbuf) == -1)
+    {
+        fprintf(stderr, "Couldn't get netmask for device %s: %s\n", dev, errbuf);
         net = 0;
         mask = 0;
     }
 
-    handle = pcap_open_live(NETWORK_DEV, BUFSIZ, 1, 1000, errbuf);
+    printf("Internet Device: %s\n", dev);
+
+    handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
 
     if (handle == NULL)
     {
-        fprintf(stderr, "Couldn't open device %s: %s\n", NETWORK_DEV, errbuf);
+        printf("Couldn't open device %s: %s\n", dev, errbuf);
         return 1;
     }
     if (pcap_compile(handle, &fp, filter, 0, net) == -1)
     {
-        fprintf(stderr, "Couldn't parse filter %s: %s\n", filter, pcap_geterr(handle));
+        printf("Couldn't parse filter %s: %s\n", filter, pcap_geterr(handle));
         return 1;
     }
     if (pcap_setfilter(handle, &fp) == -1)
     {
-        fprintf(stderr, "Couldn't install filter %s: %s\n", filter, pcap_geterr(handle));
+        printf("Couldn't install filter %s: %s\n", filter, pcap_geterr(handle));
         return 1;
     }
 
