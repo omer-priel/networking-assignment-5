@@ -54,5 +54,17 @@ Gateway: $(DIST_DIR) $(BIN_DIR)/Gateway.o $(BIN_DIR)/api.o
 build: Sniffer Spoofer Gateway
 
 # actions
-test-sniffer-1:
-	docker-compose exec attacker ./Sniffer icmp
+test-sniffer-open:
+	docker-compose exec attacker ./Sniffer
+
+test-sniffer-curl:
+	docker-compose exec attacker curl google.com
+
+test-sniffer-curl-2:
+	docker-compose exec attacker curl www.columbia.edu/~fdc/sample.html
+
+test-sniffer-show:
+	docker-compose exec attacker cat ./Sniffer.txt
+
+test-sniffer-clean:
+	docker-compose exec attacker rm ./Sniffer.txt
