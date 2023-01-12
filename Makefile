@@ -50,10 +50,10 @@ Spoofer: $(DIST_DIR) $(BIN_DIR)/Spoofer.o $(BIN_DIR)/api.o
 	$(CC) -o "$(DIST_DIR)/Spoofer" "$(BIN_DIR)/Spoofer.o" "$(BIN_DIR)/api.o"
 
 SnifferSpoofer: $(DIST_DIR) $(BIN_DIR)/SnifferSpoofer.o $(BIN_DIR)/api.o
-	$(CC) -o "$(DIST_DIR)/SnifferSpoofer" "$(BIN_DIR)/SnifferSpoofer.o" "$(BIN_DIR)/api.o"
+	$(CC) -o "$(DIST_DIR)/SnifferSpoofer" "$(BIN_DIR)/SnifferSpoofer.o" "$(BIN_DIR)/api.o" -lpcap
 
 Gateway: $(DIST_DIR) $(BIN_DIR)/Gateway.o $(BIN_DIR)/api.o
-	$(CC) -o "$(DIST_DIR)/Gateway" "$(BIN_DIR)/Gateway.o" "$(BIN_DIR)/api.o"
+	$(CC) -o "$(DIST_DIR)/Gateway" "$(BIN_DIR)/Gateway.o" "$(BIN_DIR)/api.o" -lpcap
 
 
 # build
@@ -80,3 +80,6 @@ test-spoofer-1:
 
 test-spoofer-2:
 	docker-compose exec attacker ./Spoofer 8.8.8.8 10.9.0.7
+
+test-attacker-open:
+	docker-compose exec attacker ./SnifferSpoofer
