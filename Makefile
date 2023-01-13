@@ -61,7 +61,7 @@ build: Sniffer Spoofer SnifferSpoofer Gateway
 
 # actions
 test-sniffer-open:
-	docker-compose exec attacker ./Sniffer
+	docker-compose exec attacker ./Sniffer wlp0s20f3
 
 test-sniffer-curl:
 	docker-compose exec attacker curl google.com
@@ -73,7 +73,7 @@ test-sniffer-show:
 	docker-compose exec attacker cat ./Sniffer.txt
 
 test-sniffer-clean:
-	docker-compose exec attacker rm ./Sniffer.txt
+	docker-compose exec attacker rm -f ./Sniffer.txt
 
 test-spoofer-1:
 	docker-compose exec attacker ./Spoofer 10.9.0.6 10.9.0.7

@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+    char *dev = argv[1];
     char *filter = "tcp";
 
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -12,16 +13,6 @@ int main(int argc, char *argv[])
     bpf_u_int32 net;           /* The IP of our sniffing device */
     struct pcap_pkthdr header; /* The header that pcap gives us */
     const u_char *packet;      /* The actual packet */
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    char *dev = pcap_lookupdev(errbuf);
-#pragma GCC diagnostic pop
-    if (dev == NULL)
-    {
-        printf("Couldn't find default device: %s\n", errbuf);
-        return 1;
-    }
 
     if (pcap_lookupnet(dev, &net, &mask, errbuf) == -1)
     {
@@ -77,12 +68,19 @@ int main(int argc, char *argv[])
 
                     printf("source_ip: %s\n", inet_ntoa(ip->iph_sourceip));
                     printf("dest_ip: %s\n", inet_ntoa(ip->iph_destip));
-                    fprintf(output, "{ source_ip: \"%s\", dest_ip: \"%s\"", inet_ntoa(ip->iph_sourceip), inet_ntoa(ip->iph_destip));
+                    fprintf(output, "{ source_ip: \"%s\"", inet_ntoa(ip->iph_sourceip));
+                    fprintf(output, ", dest_ip: \"%s\"", inet_ntoa(ip->iph_destip));
                     fprintf(output, ", source_port: %d, source_port: %d", tcp->th_src_port, tcp->th_dst_port);
                     fprintf(output, ", timestamp: %d, total_length: %d", app->timestamp, app->total_length);
                     fprintf(output, ", cache_flag: %d, steps_flag: %d, type_flag: %d", cache_flag, steps_flag, type_flag);
-                    fprintf(output, ", status_code: %d, cache_control: %d, data: \"%s\"", app->status_code, app->cache_control, data);
-                    fprintf(output, " }\n");
+                    fprintf(output, ", status_code: %d, cache_control: %d, data: \"", app->status_code, app->cache_control);
+
+                    for (size_t i = 0; i < app->total_length; i++)
+                    {
+                        fprintf(output, "%c", *data);
+                        data++;
+                    }
+                    fprintf(output, "\" }\n");
 
                     fclose(output);
                 }
