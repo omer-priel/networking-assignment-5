@@ -85,13 +85,13 @@ test-attacker-open:
 	docker-compose exec attacker ./SnifferSpoofer wlp0s20f3
 
 test-attacker-host-A-to-A:
-	docker-compose exec hostA ping 10.9.0.7
+	docker-compose exec hostA ping 10.9.0.7 -c 4
 
 test-attacker-host-A-to-B:
-	docker-compose exec hostA ping 10.9.0.7
+	docker-compose exec hostA ping 10.9.0.7 -c 4
 
 test-attacker-host-A-to-google:
-	docker-compose exec hostA ping 8.8.8.8
+	docker-compose exec hostA ping 8.8.8.8 -c 4
 
 test-attacker-host-A-to-not-found:
-	docker-compose exec hostA ping 8.8.200.200
+	docker-compose exec hostA ping 8.8.200.200 -c 4
