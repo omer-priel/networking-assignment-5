@@ -47,52 +47,53 @@ void process_packet(u_char *args, const struct pcap_pkthdr *header, const u_char
                 struct icmpheader *icmp = (struct icmpheader *)((u_char *)ip + sizeof(struct ipheader));
 
                 printf("ICMP: %d, %s", icmp->icmp_type, inet_ntoa(ip->iph_sourceip));
-                printf(" -> %s , %d\n", inet_ntoa(ip->iph_destip), icmp->icmp_seqs);
-
-                if (icmp->icmp_type == 8)
-                {
-                }
-
-                // sendping back
-                in_addr_t origin_sourc = ip->iph_sourceip.s_addr;
-                in_addr_t origin_dest = ip->iph_destip.s_addr;
-
-                ip->iph_destip.s_addr = origin_sourc;
-                ip->iph_sourceip.s_addr = origin_dest;
-                icmp->icmp_type = 0;
-
-                int sock = -1;
-
-                if ((sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) == -1)
-                {
-                    printf("ERROR: socket() failed with error: %d\n", errno);
-                    printf("WARNNING: To create a raw socket, the process needs to be run by Admin/root user.\n");
-                }
-
-                int enable = 1;
-                setsockopt(sock, IPPROTO_IP, IP_HDRINCL,
-                           &enable, sizeof(enable));
-
-                struct sockaddr_in dest_in;
-                memset(&dest_in, 0, sizeof(struct sockaddr_in));
-                dest_in.sin_family = AF_INET;
-                dest_in.sin_addr = ip->iph_destip;
-
-                icmp->icmp_chksum = in_cksum((unsigned short *)icmp,
-                                             sizeof(struct icmpheader));
-
-                // Send the packet using sendto() for sending datagrams.
-                int bytes_sent = sendto(sock, packet, ntohs(ip->iph_len), 0, (struct sockaddr *)&dest_in, sizeof(dest_in));
-                if (bytes_sent == -1)
-                {
-                    printf("WARNNING: sendto() failed with error: %d\n", errno);
-                }
-
-                printf("Ping sented to %s", inet_ntoa(ip->iph_sourceip));
                 printf(" -> %s\n", inet_ntoa(ip->iph_destip));
 
-                // Close the raw socket descriptor.
-                close(sock);
+                if (icmp->icmp_type == ICMP_ECHO)
+                {
+                    // sendping back
+                    int sock = -1;
+
+                    if ((sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) == -1)
+                    {
+                        printf("ERROR: socket() failed with error: %d\n", errno);
+                        printf("WARNNING: To create a raw socket, the process needs to be run by Admin/root user.\n");
+                    }
+
+                    int enable = 1;
+                    setsockopt(sock, IPPROTO_IP, IP_HDRINCL, &enable, sizeof(enable));
+
+                    icmp->icmp_type = ICMP_ECHOREPLY;
+                    icmp->icmp_chksum = in_cksum((unsigned short *)icmp,
+                                                 sizeof(struct icmpheader));
+
+                    in_addr_t origin_sourc = ip->iph_sourceip.s_addr;
+                    in_addr_t origin_dest = ip->iph_destip.s_addr;
+
+                    ip->iph_ident = 0;
+                    ip->iph_flag = 0;
+                    ip->iph_ttl = 115;
+                    ip->iph_sourceip.s_addr = origin_dest;
+                    ip->iph_destip.s_addr = origin_sourc;
+
+                    struct sockaddr_in dest_in;
+                    memset(&dest_in, 0, sizeof(struct sockaddr_in));
+                    dest_in.sin_family = AF_INET;
+                    dest_in.sin_addr = ip->iph_destip;
+
+                    // Send the packet using sendto() for sending datagrams.
+                    int bytes_sent = sendto(sock, packet, ntohs(ip->iph_len), 0, (struct sockaddr *)&dest_in, sizeof(dest_in));
+                    if (bytes_sent == -1)
+                    {
+                        printf("WARNNING: sendto() failed with error: %d\n", errno);
+                    }
+
+                    printf("Ping sented %s", inet_ntoa(ip->iph_sourceip));
+                    printf(" -> %s\n", inet_ntoa(ip->iph_destip));
+
+                    // Close the raw socket descriptor.
+                    close(sock);
+                }
             }
         }
     }
