@@ -6,8 +6,6 @@
 // ICMP header len for echo req
 #define ICMP_HEADER_LEN 8
 
-u_short calculate_checksum(unsigned short *paddress, int len);
-
 unsigned short in_cksum(unsigned short *buf, int length)
 {
     unsigned short *w = buf;
