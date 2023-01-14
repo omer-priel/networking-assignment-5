@@ -94,4 +94,4 @@ test-attacker-host-A-to-google:
 	docker-compose exec hostA ping 8.8.8.8 -c 4
 
 test-attacker-host-A-to-not-found:
-	docker-compose exec hostA ping 8.8.200.200 -c 4
+	docker-compose exec hostA ping 8.8.200.200 -c 1
