@@ -25,6 +25,12 @@ will be the one that dos the actions with Sniffer, Spoofer and the Gateway (unde
 
 - <https://www.tcpdump.org/pcap.html>
 
+## Other
+
+- tcp
+- icmp
+- udp.dstport == 8000 || udp.srcport == 8000 || udp.srcport == 8001 || udp.dstport == 8001
+
 ## Authors
 
 - Shlomit Ashkenazi

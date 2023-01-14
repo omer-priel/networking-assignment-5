@@ -109,3 +109,11 @@ test-gateway-send-host-B:
 
 test-gateway-send-host-C:
 	docker-compose exec hostC bash -c "echo -n Gateway-from-Host-C | nc -4u -w1 10.9.0.1 8000"
+
+test-gateway-sending:
+	docker-compose exec hostA bash -c "echo -n Gateway-from-Host-A-1 | nc -4u -w1 10.9.0.1 8000"
+	docker-compose exec hostB bash -c "echo -n Gateway-from-Host-B-1 | nc -4u -w1 10.9.0.1 8000"
+	docker-compose exec hostC bash -c "echo -n Gateway-from-Host-C-1 | nc -4u -w1 10.9.0.1 8000"
+	docker-compose exec hostA bash -c "echo -n Gateway-from-Host-A-2 | nc -4u -w1 10.9.0.1 8000"
+	docker-compose exec hostB bash -c "echo -n Gateway-from-Host-B-2 | nc -4u -w1 10.9.0.1 8000"
+	docker-compose exec hostC bash -c "echo -n Gateway-from-Host-C-2 | nc -4u -w1 10.9.0.1 8000"

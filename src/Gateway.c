@@ -67,7 +67,7 @@ int main(int argc, char **argv)
             printf("ERROR: recvfrom() failed with error code : %d", errno);
         }
 
-        if (recv_len > 0)
+        if (recv_len > 0 && (((float)random()) / ((float)RAND_MAX)) > 0.5)
         {
             printf("Sending...\n");
             if (sendto(socketSend, buffer, recv_len, 0, (struct sockaddr *)&clientAddress, clientAddressLen) == -1)
