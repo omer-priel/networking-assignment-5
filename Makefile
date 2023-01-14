@@ -1,6 +1,8 @@
 # variables
 CC = gcc -Wall
 
+NET_DEV=wlp0s20f3
+
 PROJECT_DIR=.
 SRC_DIR=./src
 BIN_DIR=./bin
@@ -61,7 +63,7 @@ build: Sniffer Spoofer SnifferSpoofer Gateway
 
 # actions
 test-sniffer-open:
-	docker-compose exec attacker ./Sniffer wlp0s20f3
+	docker-compose exec attacker ./Sniffer $(NET_DEV)
 
 test-sniffer-curl:
 	docker-compose exec attacker curl google.com
@@ -82,7 +84,7 @@ test-spoofer-2:
 	docker-compose exec attacker ./Spoofer 8.8.8.8 10.9.0.7
 
 test-attacker-open:
-	docker-compose exec attacker ./SnifferSpoofer wlp0s20f3
+	docker-compose exec attacker ./SnifferSpoofer $(NET_DEV)
 
 test-attacker-host-A-to-A:
 	docker-compose exec hostA ping 10.9.0.7 -c 4
@@ -95,3 +97,15 @@ test-attacker-host-A-to-google:
 
 test-attacker-host-A-to-not-found:
 	docker-compose exec hostA ping 8.8.200.200 -c 4
+
+test-gateway-open:
+	docker-compose exec attacker ./Gateway 8000
+
+test-gateway-send-host-A:
+	docker-compose exec hostA bash -c "echo -n Gateway-from-Host-A | nc -4u -w1 10.9.0.1 8000"
+
+test-gateway-send-host-B:
+	docker-compose exec hostB bash -c "echo -n Gateway-from-Host-B | nc -4u -w1 10.9.0.1 8000"
+
+test-gateway-send-host-C:
+	docker-compose exec hostC bash -c "echo -n Gateway-from-Host-C | nc -4u -w1 10.9.0.1 8000"
