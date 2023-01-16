@@ -17,7 +17,7 @@ make docker-build
 make docker-up
 ```
 
-4 container will created with IPs: 10.9.0.x (4 < x < 9) \
+4 container will created with IPs: 10.9.0.1 (attacker), 10.9.0.6, 10.9.0.7, 10.9.0.8 \
 For the tasks use the dist fold. And the Host (not the containers) \
 will be the one that dos the actions with Sniffer, Spoofer and the Gateway (under dist folder)
 
