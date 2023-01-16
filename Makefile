@@ -87,7 +87,7 @@ test-attacker-open:
 	docker-compose exec attacker ./SnifferSpoofer $(NET_DEV)
 
 test-attacker-host-A-to-A:
-	docker-compose exec hostA ping 10.9.0.7 -c 4
+	docker-compose exec hostA ping 10.9.0.6 -c 4
 
 test-attacker-host-A-to-B:
 	docker-compose exec hostA ping 10.9.0.7 -c 4
