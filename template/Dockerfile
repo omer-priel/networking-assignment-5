@@ -10,5 +10,5 @@ RUN make build
 
 FROM handsonsecurity/seed-ubuntu:large as attacker
 
-COPY --from=builder /app/dist /app
+COPY --from=builder /app /app
 WORKDIR /app
